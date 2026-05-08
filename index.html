@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple RSA Key Reconstructor</title>
+</head>
+
+<body>
+  <h1>🔑 RSA Key Reconstructor</h1>
+  <h3>Primes p & q</h3> <button id="reset-first">reset</button>
+  <div>
+    <label>p:</label>
+    <textarea type="text" cols="80" id="p"></textarea>
+  </div>
+
+  <br>
+
+  <div>
+    <label>q:</label>
+    <textarea type="text" cols="80" id="q"></textarea>
+  </div>
+
+  <br>
+
+  <button id="compute-key-params">Compute Key Parameters</button>
+
+  <hr>
+
+  <h3>Modulus N, Euler Totient Function Φ and public exponent e</h3>
+  <button id="reset-second">reset</button>
+
+  <p>N = p * q :
+    <textarea type="text" cols="80" id="n"></textarea>
+  </p>
+
+  <p>Φ(N) = (p - 1)(q - 1) :
+    <textarea type="text" cols="80" id="phi"></textarea>
+  </p>
+
+  <div>
+    <label>Choose public exponent e:</label>
+    <input type="number" id="e" />
+    <button id="compute-private">Compute & Export Private Key</button>
+  </div>
+
+  <hr>
+
+
+  <h3>Results</h3> <button id="reset-results">reset</button>
+
+  <p>Private exponent d :
+    <textarea cols="80" id="d"></textarea>
+  </p>
+
+
+  <p>Private key (PEM format using PKCS#8) :</p>
+  <textarea id="private" cols="80" rows="25"></textarea>
+
+  <p>Public key :</p>
+  <textarea id="public" cols="80" rows="25"></textarea>
+
+  <script type="module" src="index.js"></script>
+
+</body>
+
+</html>
