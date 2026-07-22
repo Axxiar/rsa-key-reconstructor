@@ -4,64 +4,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple RSA Key Reconstructor</title>
+  <title>RSA Reconstructor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1>🔑 RSA Key Reconstructor</h1>
-  <h3>Primes p & q</h3> <button id="reset-first">reset</button>
-  <div>
-    <label>p:</label>
-    <textarea type="text" cols="80" id="p"></textarea>
-  </div>
+    <div class="top-bar">
+      <h1>🔑 Simple RSA Key Reconstructor</h1>
+    </div>
 
-  <br>
+    <section id="p-q">
+        <div class="section-header">
+            <h3>Primes p & q</h3>
+            <button id="reset-first">Reset</button>
+        </div>
 
-  <div>
-    <label>q:</label>
-    <textarea type="text" cols="80" id="q"></textarea>
-  </div>
+        <label for="p">Prime p</label>
+        <textarea id="p"></textarea>
 
-  <br>
+        <label for="q">Prime q</label>
+        <textarea id="q"></textarea>
 
-  <button id="compute-key-params">Compute Key Parameters</button>
+        <button id="compute-key-params">Compute Key Parameters</button>
+    </section>
 
-  <hr>
+    <section id="m-and-params">
+        <div class="section-header">
+            <h3>Modulus & Public Parameters</h3>
+            <button id="reset-second">Reset</button>
+        </div>
 
-  <h3>Modulus N, Euler Totient Function Φ and public exponent e</h3>
-  <button id="reset-second">reset</button>
+        <label for="n">N = p × q</label>
+        <textarea id="n"></textarea>
 
-  <p>N = p * q :
-    <textarea type="text" cols="80" id="n"></textarea>
-  </p>
+        <label for="phi">Φ(N) = (p − 1)(q − 1)</label>
+        <textarea id="phi"></textarea>
 
-  <p>Φ(N) = (p - 1)(q - 1) :
-    <textarea type="text" cols="80" id="phi"></textarea>
-  </p>
+        <div class="inline">
+            <label for="e">Public exponent (e)</label>
+            <input type="number" id="e">
 
-  <div>
-    <label>Choose public exponent e:</label>
-    <input type="number" id="e" />
-    <button id="compute-private">Compute & Export Private Key</button>
-  </div>
+            <button id="compute-private">
+                Compute & Export Private Key
+            </button>
+        </div>
+    </section>
 
-  <hr>
+    <section id="results">
+        <div class="section-header">
+            <h3>Results</h3>
+            <button id="reset-results">Reset</button>
+        </div>
 
+        <label for="d">Private exponent (d)</label>
+        <textarea id="d"></textarea>
 
-  <h3>Results</h3> <button id="reset-results">reset</button>
+        <label for="private">Private Key (PKCS#8 PEM)</label>
+        <textarea id="private" rows="16"></textarea>
 
-  <p>Private exponent d :
-    <textarea cols="80" id="d"></textarea>
-  </p>
+        <label for="public">Public Key (PEM)</label>
+        <textarea id="public" rows="16"></textarea>
+    </section>
 
-
-  <p>Private key (PEM format using PKCS#8) :</p>
-  <textarea id="private" cols="80" rows="25"></textarea>
-
-  <p>Public key :</p>
-  <textarea id="public" cols="80" rows="25"></textarea>
-
-  <script type="module" src="index.js"></script>
+    <script type="module" src="index.js"></script>
 
 </body>
 
