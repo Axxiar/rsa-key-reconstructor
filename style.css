@@ -10,23 +10,36 @@
   --primary-hover: #3f3215;
   --danger: #c7201d69;
   --danger-hover: #C7211D;
-  
-  --radius: 10px 10px 40px 10px;
+  --title: #fff;
+
+  --radius: 10px 40px 10px 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #173753;
-    --card: #1B4353;
-    --text: #f8fafc;
-    --muted: #6b7280;
-    --border: #091622;
-    --primary: #2892D7;
-    --primary-hover: #1d6799;
-    --danger: #971a16;
-    --danger-hover: #c7201d;
-  }
+:root.dark {
+  --bg: #163027;
+  --card: #285A48;
+  --text: #B0E4CC;
+  --muted: #6b7280;
+  --border: #091622;
+  --primary: #408A71;
+  --primary-hover: #336c59;
+  --danger: #971a16;
+  --danger-hover: #c7201d;
 }
+
+:root.catpuccin {
+  --bg: #1e1e2e;
+  --card: #45475a;
+  --text: #cdd6f4;
+  --muted: #6b7280;
+  --border: #313244;
+  --primary: #987db9;
+  --primary-hover: #cba6f7;
+  --danger: #eba0ac;
+  --danger-hover: #f38ba8;
+  --title: #fff;
+}
+
 
 * {
   box-sizing: border-box;
@@ -56,6 +69,38 @@ h1 {
   font-size: 2rem;
 }
 
+:root.catpuccin h1 {
+  background: linear-gradient(135deg,
+      #cba6f7,
+      #f38ba8,
+      #eba0ac,
+      #fab387,
+      #f9e2af,
+      #a6e3a1,
+      #94e2d5,
+      #89dceb,
+      #74c7ec,
+      #89b4fa,
+      #b4befe,
+      #cba6f7,
+      #f38ba8,
+      #eba0ac,
+      #fab387,
+      #f9e2af,
+      #a6e3a1,
+      #94e2d5,
+      #89dceb,
+      #74c7ec,
+      #89b4fa,
+      #b4befe);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowText 10s linear infinite;
+  background-size: 200% 200%;
+}
+
 h3 {
   color: var(--primary);
   margin-bottom: 1rem;
@@ -68,12 +113,19 @@ hr {
   margin: 2rem 0;
 }
 
+select {
+  background: var(--card);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: -2px 6px #0101018f;
+}
+
 section {
   background: var(--card);
   border-radius: var(--radius);
   padding: 24px;
   margin-bottom: 40px;
-  box-shadow: 5px 10px #0101013d;
+  box-shadow: -7px 12px #0101018f;
 }
 
 .section-header {
@@ -196,5 +248,15 @@ button {
 
   #e {
     max-width: 100%;
+  }
+}
+
+@keyframes rainbowText {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
   }
 }

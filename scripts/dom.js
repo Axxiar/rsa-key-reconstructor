@@ -35,3 +35,26 @@ export function readInputs() {
 document.getElementById("reset-first").addEventListener("click", resetFirstParams);
 document.getElementById("reset-second").addEventListener("click", resetSecondParams);
 document.getElementById("reset-results").addEventListener("click", resetResults);
+
+document.addEventListener('DOMContentLoaded', function() {
+    const optionsSelect = document.getElementById('options');
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.classList.remove('light', 'dark', 'catpuccin');
+        if (savedTheme !== 'light')
+            document.documentElement.classList.add(savedTheme);
+
+        optionsSelect.value = savedTheme || 'light';
+    }
+    
+    optionsSelect.addEventListener('change', function() {
+        const selectedTheme = this.value;
+        document.documentElement.classList.remove('light', 'dark', 'catpuccin');
+        
+        if (selectedTheme !== 'light')
+            document.documentElement.classList.add(selectedTheme);
+        
+        localStorage.setItem('theme', selectedTheme);
+    });
+});

@@ -31,7 +31,7 @@ Then access it in your favorite browser: `http://localhost:8000`
 ### Roadmap
 
 - [x] Style
-- [ ] Export public key
+- [X] Export public key
 - [ ] Support different key sizes
 - [ ] Support different algorithms
 - [ ] Support different export formats
