@@ -1,4 +1,4 @@
-import { computeKeyParameters, computePrivateKeyAndExport } from "./scripts/rsaController.js";
+import { computeKeyParameters, computeKeysAndExport } from "./scripts/rsaController.js";
 
 document
     .getElementById("compute-key-params")
@@ -6,5 +6,5 @@ document
 
 document
     .getElementById("compute-private")
-    .addEventListener("click", computePrivateKeyAndExport);
+    .addEventListener("click", computeKeysAndExport);
 

@@ -1,6 +1,11 @@
 import * as dom from "./dom.js";
 import { gcd, modInverse } from "./rsaMath.js";
-import { bigIntToBase64Url, pkcs8ToPEM } from "./utils.js";
+import { bigIntToBase64Url, pkcs8ToPEM, spkiToPEM } from "./utils.js";
+
+const RSA_ALG_CONFIG = {
+    name: "RSASSA-PKCS1-v1_5",
+    hash: "SHA-256"
+};
 
 export function computeKeyParameters() {
     const { p, q } = dom.readInputs();
@@ -30,6 +35,29 @@ function computePrivateExponent(e, phi) {
     return modInverse(e, phi);
 }
 
+function buildBasicJWK(n, e, alg = "RS256") {
+    return {
+        kty: "RSA",
+        n: bigIntToBase64Url(n),
+        e: bigIntToBase64Url(e),
+        alg: alg
+    };
+}
+
+async function importRsaKey(jwk, keyUsages) {
+    return window.crypto.subtle.importKey(
+        "jwk",
+        jwk,
+        RSA_ALG_CONFIG,
+        true,
+        keyUsages
+    );
+}
+
+async function exportRsaKey(key, format) {
+    return window.crypto.subtle.exportKey(format, key);
+}
+
 async function importRsaPrivateKey(p, q, e, d) {
     const n = p * q;
 
@@ -42,36 +70,34 @@ async function importRsaPrivateKey(p, q, e, d) {
     const qi = modInverse(q, p);
 
     const privateKeyJWK = {
-        kty: "RSA",
-        n: bigIntToBase64Url(n),
-        e: bigIntToBase64Url(e),
+        ...buildBasicJWK(n, e),
         d: bigIntToBase64Url(d),
         p: bigIntToBase64Url(p),
         q: bigIntToBase64Url(q),
         dp: bigIntToBase64Url(dp),
         dq: bigIntToBase64Url(dq),
-        qi: bigIntToBase64Url(qi),
-        alg: "RS256"
+        qi: bigIntToBase64Url(qi)
     };
 
-    return window.crypto.subtle.importKey(
-        "jwk",
-        privateKeyJWK,
-        {
-            name: "RSASSA-PKCS1-v1_5", // Or "RSA-OAEP" for encryption
-            hash: "SHA-256"
-        },
-        true,
-        ["sign"] // Or ["decrypt"] if using RSA-OAEP
-    );
+    return importRsaKey(privateKeyJWK, ["sign"]);
 }
 
-export async function exportPrivateKey(p, q, e, d, format="pkcs8") {
+async function importRsaPublicKey(n, e) {
+    const publicKeyJWK = buildBasicJWK(n, e);
+    return importRsaKey(publicKeyJWK, ["verify"]);
+}
+
+export async function exportPrivateKey(p, q, e, d, format = "pkcs8") {
     const pvKey = await importRsaPrivateKey(p, q, e, d);
-    return window.crypto.subtle.exportKey(format, pvKey);
+    return exportRsaKey(pvKey, format);
 }
 
-export async function computePrivateKeyAndExport() {
+export async function exportPublicKey(n, e, format="spki") {
+    const pubKey = await importRsaPublicKey(n, e);
+    return exportRsaKey(pubKey, format);
+}
+
+export async function computeKeysAndExport() {
     const { p, q, e, phi } = dom.readInputs();
     if (!p || !q) {
         alert("p and q are needed here too");
@@ -82,8 +108,9 @@ export async function computePrivateKeyAndExport() {
     if (!d) return;
 
     const pkcs8Buffer = await exportPrivateKey(p, q, e, d)
-    // TODO: export public.
+    const spkiBuffer = await exportPublicKey(p * q, e);
 
     dom.dText().value = d;
     dom.privateText().value = pkcs8ToPEM(pkcs8Buffer);
+    dom.publicText().value = spkiToPEM(spkiBuffer);
 }
